@@ -44,7 +44,10 @@
 			<!-- Main -->
 				<section id="main" class="container">
 					<header>
-						<h2>Search</h2>
+						<input type="text" name="query" id="queryval" value="" placeholder="Search"></br>
+						<div class="col-3 col-12-mobilep">
+							<input type="submit" value="Search" class="fit" id="querysearch">
+						</div>
 						<p>Search results for: Engineering</p>
 					</header>
 					<div class="box">
@@ -90,9 +93,9 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-            <script>
-                var queryString = decodeURIComponent(window.location.search);
-                
-            </script>
+			<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
+			<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+			<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+			<script src="assets/js/search.js"></script>
 	</body>
 </html>
