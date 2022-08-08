@@ -2,6 +2,7 @@
 var queryString = decodeURIComponent(window.location.search);
 queryString = queryString.substring(1);
 console.log(queryString);
+document.getElementById("whatsearch").innerHTML = `Search results for: ${queryString}`;
 
 document.getElementById("querysearch").addEventListener("click", function(){
     e.preventDefault();
@@ -26,7 +27,51 @@ const firebaseConfig = {
     measurementId: "G-614BM0ZLB6"
   };
 
-firebase.initializeApp(firebaseConfig);
+const internships = []
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+db.collection("Internships").get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        internships.push(doc.data());
+        // console.log(`${doc.id} => ${doc.data()["Description"]}`); //Object.values(doc.data())
+    });
+    const options = {
+        includeScore: true,
+        keys: [{name:'Name', weight:0.7}, {name:"Description", weight:0.3}]
+      }
+    
+    //console.log(internships);
+    
+    const fuse = new Fuse(internships, options);
+    
+    const result = fuse.search('Test');
+    console.log(result);
+    //result.reverse();
+
+    for (let i = 0; i < result.length; i++) {
+        let append = `<div class="box">
+                        <div class="col-6 col-12-narrower">
+
+                            <section class="box special">
+                                <span class="image featured"><img src="images/pic02.jpg" alt=""></span>
+                                <h3>${result[i]["item"]["Name"]}</h3>
+                                <p>Description
+
+                                ${result[i]["item"]["Description"]}</p>
+                                <ul class="actions special">
+                                    <li><a href="#" class="button alt">Learn More</a></li>
+                                </ul>
+                            </section>
+        
+                        </div>
+					</div>
+                    `;
+        document.getElementById("internships").innerHTML += append;
+    }
+});
+
 
 
 //var queryString = decodeURIComponent(window.location.search);
